@@ -1,0 +1,7 @@
+body { background-color: #f5f7fb; }
+.card { border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.navbar-brand { letter-spacing: 0.5px; }
+.badge-status-SUBMITTED { background-color: #ffc107; color:#000; }
+.badge-status-PROCESSED { background-color: #0dcaf0; color:#000; }
+.badge-status-PAID { background-color: #198754; }
+.paper-sheet { background:#fff; padding: 2rem; border: 1px solid #ddd; }
