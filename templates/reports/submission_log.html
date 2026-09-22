@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Submission Log{% endblock %}
+{% block content %}
+<h3>Teacher-to-Admin Submission Log</h3>
+<div class="row g-2 mb-3">
+  {% for row in status_counts %}
+  <div class="col-auto"><span class="badge badge-status-{{ row.status }}">{{ row.status }}: {{ row.total }}</span></div>
+  {% endfor %}
+</div>
+<table class="table bg-white">
+  <thead><tr><th>Teacher</th><th>Subject</th><th>Status</th><th>Submitted</th><th>Processed By</th></tr></thead>
+  <tbody>
+    {% for s in submissions %}
+    <tr>
+      <td>{{ s.teacher }}</td><td>{{ s.subject }}</td>
+      <td><span class="badge badge-status-{{ s.status }}">{{ s.get_status_display }}</span></td>
+      <td>{{ s.submitted_on|date:"d M Y" }}</td><td>{{ s.processed_by|default:"—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

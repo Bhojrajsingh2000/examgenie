@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Blueprints{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h3>Paper Blueprints</h3>
+  <a href="{% url 'blueprint:blueprint_create' %}" class="btn btn-primary">+ New Blueprint</a>
+</div>
+<table class="table bg-white mt-3">
+  <thead><tr><th>Subject</th><th>Exam Type</th><th>Total Marks</th><th>Questions</th><th></th></tr></thead>
+  <tbody>
+    {% for b in blueprints %}
+    <tr>
+      <td>{{ b.subject }}</td><td>{{ b.get_exam_type_display }}</td><td>{{ b.total_marks }}</td>
+      <td>{{ b.structure_total_questions }}</td>
+      <td>
+        <a href="{% url 'blueprint:blueprint_detail' b.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+        <a href="{% url 'blueprint:blueprint_delete' b.pk %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')">Delete</a>
+      </td>
+    </tr>
+    {% empty %}<tr><td colspan="5" class="text-muted">No blueprints yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

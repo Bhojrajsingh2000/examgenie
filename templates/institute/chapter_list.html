@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Chapters{% endblock %}
+{% block content %}
+<h3>Chapters</h3>
+<div class="row g-4 mt-2">
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6>Add Chapter</h6>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-2">{{ form.subject }}</div>
+        <div class="mb-2">{{ form.name }}</div>
+        <div class="mb-2">{{ form.sequence }}</div>
+        <button class="btn btn-primary w-100">Add</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <table class="table bg-white">
+      <thead><tr><th>Chapter</th><th>Subject</th><th>Seq</th><th></th></tr></thead>
+      <tbody>
+        {% for c in chapters %}
+        <tr>
+          <td>{{ c.name }}</td><td>{{ c.subject }}</td><td>{{ c.sequence }}</td>
+          <td><a href="{% url 'institute:chapter_delete' c.pk %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')">Delete</a></td>
+        </tr>
+        {% empty %}<tr><td colspan="4" class="text-muted">No chapters yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pay to Download{% endblock %}
+{% block content %}
+<h3>Complete Payment to Download Your Paper</h3>
+<div class="card p-4 mt-3" style="max-width:500px;">
+  <p><strong>Subject:</strong> {{ submission.subject }}</p>
+  <p><strong>Exam:</strong> {{ submission.exam_type }}</p>
+  <p><strong>Amount:</strong> ₹{{ payment.amount }}</p>
+
+  <button id="rzp-button" class="btn btn-success w-100 mt-2">Pay Now</button>
+
+  <form id="callback-form" method="post" action="{% url 'payments:payment_callback' payment.pk %}" class="d-none">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ order_id }}">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('rzp-button').onclick = function (e) {
+  var options = {
+    "key": "{{ razorpay_key_id }}",
+    "amount": "{{ amount_paise }}",
+    "currency": "INR",
+    "name": "ExamGenie",
+    "description": "Digitised Question Paper - {{ submission.subject }}",
+    "order_id": "{{ order_id }}",
+    "handler": function (response) {
+      document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+      document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+      document.getElementById('razorpay_signature').value = response.razorpay_signature;
+      document.getElementById('callback-form').submit();
+    },
+    "theme": { "color": "#0d6efd" }
+  };
+  var rzp = new Razorpay(options);
+  rzp.open();
+  e.preventDefault();
+};
+</script>
+{% endblock %}

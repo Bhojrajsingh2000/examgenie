@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Generate Paper{% endblock %}
+{% block content %}
+<h3>Generate Question Paper</h3>
+<div class="card p-4 mt-3" style="max-width:600px;">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Blueprint</label>
+      <select name="blueprint" class="form-select" required>
+        {% for b in blueprints %}
+        <option value="{{ b.pk }}">{{ b }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Number of Sets</label>
+      <input type="number" name="num_sets" class="form-control" value="1" min="1" max="6" required>
+      <div class="form-text">Generates Set A, Set B, Set C... with shuffled question order to reduce copying.</div>
+    </div>
+    <button class="btn btn-primary" type="submit">Generate</button>
+  </form>
+</div>
+{% endblock %}

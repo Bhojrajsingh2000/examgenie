@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ExamGenie{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{% url 'accounts:dashboard' %}">ExamGenie</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if user.role == 'ADMIN' %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'institute:class_list' %}">Classes</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'institute:subject_list' %}">Subjects</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'submissions:pending_submissions' %}">Pending Submissions</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'reports:submission_log' %}">Reports</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'accounts:create_user' %}">Add User</a></li>
+        {% elif user.role == 'TEACHER' %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'question_bank:question_list' %}">Question Bank</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'submissions:submit_paper' %}">Submit Paper</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'submissions:my_submissions' %}">My Submissions</a></li>
+        {% elif user.role == 'COORDINATOR' %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'blueprint:blueprint_list' %}">Blueprints</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'papergen:generate_form' %}">Generate Paper</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'papergen:paper_list' %}">Generated Papers</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'reports:generation_log' %}">Reports</a></li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle position-relative" href="#" data-bs-toggle="dropdown">
+            🔔
+            {% if unread_notifications_count %}
+              <span class="badge rounded-pill bg-danger">{{ unread_notifications_count }}</span>
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width:300px;">
+            {% for n in unread_notifications %}
+              <li><a class="dropdown-item small" href="{% url 'notifications:mark_read' n.pk %}">{{ n.message }}</a></li>
+            {% empty %}
+              <li class="dropdown-item small text-muted">No new notifications</li>
+            {% endfor %}
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item small text-center" href="{% url 'notifications:notification_list' %}">View all</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><span class="nav-link">{{ user.get_full_name|default:user.username }} ({{ user.get_role_display }})</span></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4 mb-5">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

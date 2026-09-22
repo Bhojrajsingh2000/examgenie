@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}New Blueprint{% endblock %}
+{% block content %}
+<h3>New Blueprint</h3>
+<div class="card p-4 mt-3" style="max-width:700px;">
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+        {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Save Blueprint</button>
+  </form>
+</div>
+{% endblock %}

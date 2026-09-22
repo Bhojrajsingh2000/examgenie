@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Paper Preview{% endblock %}
+{% block content %}
+<h3>{{ paper }}</h3>
+<div class="paper-sheet mt-3">
+  <h5 class="text-center">{{ paper.blueprint.subject }} — {{ paper.blueprint.get_exam_type_display }} ({{ paper.set_label }})</h5>
+  <p class="text-center text-muted">Total Marks: {{ paper.blueprint.total_marks }}</p>
+  <ol>
+  {% for pq in questions %}
+    <li class="mb-2">{{ pq.question.question_text }} <span class="text-muted">[{{ pq.question.marks }} marks]</span></li>
+  {% endfor %}
+  </ol>
+</div>
+<a href="{% url 'papergen:download_paper' paper.pk %}" class="btn btn-primary mt-2">Download PDF</a>
+{% endblock %}

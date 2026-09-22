@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Payment Log{% endblock %}
+{% block content %}
+<h3>Payment Log</h3>
+<p class="fs-5">Total Revenue: <strong>₹{{ total_revenue }}</strong></p>
+<table class="table bg-white">
+  <thead><tr><th>Teacher</th><th>Subject</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+  <tbody>
+    {% for p in payments %}
+    <tr>
+      <td>{{ p.teacher }}</td><td>{{ p.submission.subject }}</td><td>₹{{ p.amount }}</td>
+      <td>{{ p.status }}</td><td>{{ p.created_on|date:"d M Y H:i" }}</td>
+    </tr>
+    {% empty %}<tr><td colspan="5" class="text-muted">No payments yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

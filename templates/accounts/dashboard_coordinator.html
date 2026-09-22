@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Coordinator Dashboard{% endblock %}
+{% block content %}
+<h3>Exam Coordinator Dashboard</h3>
+<div class="row g-3 mt-2">
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6 class="text-muted">Blueprints Defined</h6>
+      <h2>{{ blueprints }}</h2>
+      <a href="{% url 'blueprint:blueprint_list' %}" class="btn btn-sm btn-outline-primary">Manage</a>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card p-3">
+      <h6 class="text-muted">Recently Generated Papers</h6>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Subject</th><th>Exam</th><th>Set</th><th>Generated On</th></tr></thead>
+        <tbody>
+          {% for p in recent_papers %}
+          <tr><td>{{ p.blueprint.subject }}</td><td>{{ p.blueprint.get_exam_type_display }}</td><td>{{ p.set_label }}</td><td>{{ p.generated_on|date:"d M Y" }}</td></tr>
+          {% empty %}
+          <tr><td colspan="4" class="text-muted">No papers generated yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{% url 'papergen:generate_form' %}" class="btn btn-sm btn-primary mt-2">Generate a paper</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

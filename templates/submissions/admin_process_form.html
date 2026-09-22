@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Process Submission{% endblock %}
+{% block content %}
+<h3>Process Submission</h3>
+<p>Teacher: <strong>{{ submission.teacher }}</strong> &nbsp; Subject: <strong>{{ submission.subject }}</strong> &nbsp; Exam: <strong>{{ submission.exam_type }}</strong></p>
+<p><a href="{% url 'submissions:view_handwritten' submission.pk %}" target="_blank" class="btn btn-outline-secondary btn-sm">View Handwritten PDF</a></p>
+
+<div class="card p-4 mt-3" style="max-width:600px;">
+  <h6>Upload Finalized Digital PDF</h6>
+  <p class="text-muted small">Transcribe the handwritten paper into the standard digital format, then upload it here. The teacher will be notified automatically and can pay to download it.</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.finalized_pdf }}
+    {% if form.finalized_pdf.errors %}<div class="text-danger small">{{ form.finalized_pdf.errors }}</div>{% endif %}
+    <button class="btn btn-primary mt-3" type="submit">Mark as Processed & Notify Teacher</button>
+  </form>
+</div>
+{% endblock %}

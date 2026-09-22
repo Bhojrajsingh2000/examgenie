@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}All Submissions{% endblock %}
+{% block content %}
+<h3>All Submissions</h3>
+<table class="table bg-white mt-3">
+  <thead><tr><th>Teacher</th><th>Subject</th><th>Status</th><th>Submitted</th><th>Processed By</th></tr></thead>
+  <tbody>
+    {% for s in submissions %}
+    <tr>
+      <td>{{ s.teacher }}</td><td>{{ s.subject }}</td>
+      <td><span class="badge badge-status-{{ s.status }}">{{ s.get_status_display }}</span></td>
+      <td>{{ s.submitted_on|date:"d M Y" }}</td>
+      <td>{{ s.processed_by|default:"—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

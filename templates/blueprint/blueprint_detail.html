@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Blueprint Detail{% endblock %}
+{% block content %}
+<h3>{{ blueprint }}</h3>
+<table class="table bg-white mt-3">
+  <thead><tr><th>Difficulty</th><th>Type</th><th>Marks Each</th><th>Count</th></tr></thead>
+  <tbody>
+    {% for row in blueprint.structure %}
+    <tr><td>{{ row.difficulty }}</td><td>{{ row.question_type }}</td><td>{{ row.marks }}</td><td>{{ row.count }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'papergen:generate_form' %}" class="btn btn-primary">Generate Paper From This Blueprint</a>
+{% endblock %}

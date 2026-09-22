@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h3>Administrator Dashboard</h3>
+<div class="row g-3 mt-2">
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6 class="text-muted">Pending Submissions</h6>
+      <h2>{{ pending_submissions }}</h2>
+      <a href="{% url 'submissions:pending_submissions' %}" class="btn btn-sm btn-outline-primary">Review now</a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6 class="text-muted">Total Questions in Bank</h6>
+      <h2>{{ total_questions }}</h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h6 class="text-muted">Papers Generated</h6>
+      <h2>{{ total_papers_generated }}</h2>
+    </div>
+  </div>
+</div>
+{% endblock %}

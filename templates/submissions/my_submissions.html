@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}My Submissions{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h3>My Paper Submissions</h3>
+  <a href="{% url 'submissions:submit_paper' %}" class="btn btn-primary">+ Submit New Paper</a>
+</div>
+<table class="table bg-white mt-3">
+  <thead><tr><th>Subject</th><th>Exam</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead>
+  <tbody>
+    {% for s in submissions %}
+    <tr>
+      <td>{{ s.subject }}</td><td>{{ s.exam_type }}</td>
+      <td><span class="badge badge-status-{{ s.status }}">{{ s.get_status_display }}</span></td>
+      <td>{{ s.submitted_on|date:"d M Y" }}</td>
+      <td>
+        {% if s.status == 'PROCESSED' %}
+          <a href="{% url 'payments:initiate_payment' s.pk %}" class="btn btn-sm btn-success">Pay & Download</a>
+        {% elif s.status == 'PAID' %}
+          <a href="{% url 'payments:get_secure_download_link' s.pk %}" class="btn btn-sm btn-outline-success">Get Download Link</a>
+        {% else %}
+          <span class="text-muted small">Awaiting admin processing</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}<tr><td colspan="5" class="text-muted">No submissions yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

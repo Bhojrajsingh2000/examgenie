@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful{% endblock %}
+{% block content %}
+<div class="card p-5 text-center" style="max-width:500px;margin:0 auto;">
+  <h2 class="text-success">✔ Payment Successful</h2>
+  <p>Your payment of ₹{{ payment.amount }} for <strong>{{ payment.submission.subject }}</strong> was successful.</p>
+  <a href="{% url 'payments:get_secure_download_link' payment.submission.pk %}" class="btn btn-primary mt-3">Download Finalized Paper</a>
+</div>
+{% endblock %}

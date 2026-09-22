@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Submit Paper{% endblock %}
+{% block content %}
+<h3>Submit Handwritten Question Paper</h3>
+<p class="text-muted">Step 1 of the Teacher-to-Admin workflow: attach a scanned/handwritten PDF. The Admin will be notified automatically.</p>
+<div class="card p-4 mt-3" style="max-width:600px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Submit for Processing</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Download Paper{% endblock %}
+{% block content %}
+<div class="card p-5 text-center" style="max-width:500px;margin:0 auto;">
+  <h3>Your Paper is Ready</h3>
+  <p>{{ submission.subject }} — {{ submission.exam_type }}</p>
+  <a href="{% url 'payments:secure_download' submission.pk token %}" class="btn btn-success">Download PDF</a>
+  <p class="text-muted small mt-3">This secure link expires shortly after being generated. If it expires, come back to this page to generate a new one.</p>
+</div>
+{% endblock %}

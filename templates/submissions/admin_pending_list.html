@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Pending Submissions{% endblock %}
+{% block content %}
+<h3>Pending Submissions (Awaiting Transcription)</h3>
+<table class="table bg-white mt-3">
+  <thead><tr><th>Teacher</th><th>Subject</th><th>Exam</th><th>Submitted</th><th></th></tr></thead>
+  <tbody>
+    {% for s in submissions %}
+    <tr>
+      <td>{{ s.teacher.get_full_name|default:s.teacher.username }}</td>
+      <td>{{ s.subject }}</td><td>{{ s.exam_type }}</td><td>{{ s.submitted_on|date:"d M Y H:i" }}</td>
+      <td>
+        <a href="{% url 'submissions:view_handwritten' s.pk %}" class="btn btn-sm btn-outline-secondary" target="_blank">View PDF</a>
+        <a href="{% url 'submissions:process_submission' s.pk %}" class="btn btn-sm btn-primary">Process</a>
+      </td>
+    </tr>
+    {% empty %}<tr><td colspan="5" class="text-muted">No pending submissions. All caught up!</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
